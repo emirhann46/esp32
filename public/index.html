@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Akıllı Bitki Sulama</title>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      color: #222;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: white;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+      gap: 20px;
+    }
+    .kart {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.3);
+      text-align: center;
+    }
+    .deger {
+      font-size: 40px;
+      font-weight: bold;
+    }
+    .yesil { color: #2ecc71; }
+    .kirmizi { color: #e74c3c; }
+    .turuncu { color: #f39c12; }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 18px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: white;
+    }
+
+    .durum {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🌱 Akıllı Sulama Sistemi</h1>
+
+  <div class="grid">
+    <div class="kart">
+      <div>Toprak Nemi</div>
+      <div class="deger" id="nem">--%</div>
+      <div>Ham: <span id="raw">--</span></div>
+    </div>
+
+    <div class="kart">
+      <div>Pompa</div>
+      <div class="deger" id="pompa">--</div>
+    </div>
+
+    <div class="kart">
+      <div>Su Durumu</div>
+      <div class="deger" id="su">--</div>
+    </div>
+  </div>
+
+  <button onclick="manuelSulama()">💦 MANUEL SULAMA</button>
+
+  <div class="kart" style="margin-top:20px;">
+    Toplam Sulama: <b id="sulama">0</b>
+  </div>
+
+  <div class="durum" id="baglanti">Bağlanıyor...</div>
+</div>
+
+<script>
+  const socket = io();
+
+  const nemEl = document.getElementById("nem");
+  const rawEl = document.getElementById("raw");
+  const pompaEl = document.getElementById("pompa");
+  const suEl = document.getElementById("su");
+  const sulamaEl = document.getElementById("sulama");
+  const baglantiEl = document.getElementById("baglanti");
+
+  socket.on("connect", () => {
+    baglantiEl.textContent = "Bağlı ✅";
+    baglantiEl.style.color = "lime";
+  });
+
+  socket.on("disconnect", () => {
+    baglantiEl.textContent = "Bağlantı Kesildi ❌";
+    baglantiEl.style.color = "red";
+  });
+
+  socket.on("veriGuncelle", (veri) => {
+
+    nemEl.textContent = veri.nem + "%";
+    rawEl.textContent = veri.raw;
+
+    if (veri.nem < 35) nemEl.className = "deger kirmizi";
+    else if (veri.nem > 70) nemEl.className = "deger yesil";
+    else nemEl.className = "deger turuncu";
+
+    if (veri.pompa) {
+      pompaEl.textContent = "AÇIK";
+      pompaEl.className = "deger yesil";
+    } else {
+      pompaEl.textContent = "KAPALI";
+      pompaEl.className = "deger kirmizi";
+    }
+
+    suEl.textContent = veri.su;
+    if (veri.su === "DOLU") suEl.className = "deger yesil";
+    else if (veri.su === "YARIM") suEl.className = "deger turuncu";
+    else suEl.className = "deger kirmizi";
+
+    sulamaEl.textContent = veri.sulama;
+  });
+
+  async function manuelSulama() {
+    if (!confirm("Manuel sulama başlatılsın mı?")) return;
+
+    try {
+      await fetch("/api/sulama", { method: "POST" });
+      alert("✅ Manuel sulama gönderildi");
+    } catch {
+      alert("❌ ESP32’ye ulaşılamadı");
+    }
+  }
+</script>
+
+</body>
+</html>
