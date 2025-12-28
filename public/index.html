@@ -3,145 +3,403 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🌱 Akıllı Bitki Sulama Sistemi</title>
   <script src="/socket.io/socket.io.js"></script>
 
+  <!-- ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: #fff;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
+      line-height: 1.5;
     }
 
-    .container {
-      width: 100%;
-      max-width: 950px;
+    .app {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
     }
 
-    h1 {
+    /* Header */
+    .header {
       text-align: center;
-      font-size: 42px;
-      margin-bottom: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      margin-bottom: 32px;
     }
 
-    .status-bar {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 25px;
-      font-size: 20px;
-      font-weight: bold;
-      transition: 0.3s;
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #22c55e, #10b981, #14b8a6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 25px;
+    .header p {
+      color: #64748b;
+      font-size: 1rem;
     }
 
-    .kart {
-      background: white;
-      color: #333;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      transition: 0.3s;
-    }
-
-    .kart:hover {
-      transform: translateY(-5px);
-    }
-
-    .kart-title {
-      font-size: 20px;
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 50px;
       font-weight: 600;
-      margin-bottom: 12px;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+      background: #1e293b;
+      border: 1px solid #334155;
     }
 
-    .deger {
-      font-size: 48px;
-      font-weight: bold;
-      margin-bottom: 12px;
+    .status-badge.connected {
+      border-color: #22c55e40;
+      background: #22c55e10;
     }
 
-    .yesil {
-      color: #2ecc71;
+    .status-badge.disconnected {
+      border-color: #ef444440;
+      background: #ef444410;
     }
 
-    .kirmizi {
-      color: #e74c3c;
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #64748b;
+      animation: pulse 2s infinite;
     }
 
-    .turuncu {
-      color: #f39c12;
+    .status-badge.connected .status-dot {
+      background: #22c55e;
     }
 
-    button {
-      width: 100%;
-      padding: 18px;
-      margin-top: 25px;
-      border-radius: 12px;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ff512f, #dd2476);
-      color: white;
-      font-weight: bold;
-      letter-spacing: 1px;
-      transition: 0.3s;
+    .status-badge.disconnected .status-dot {
+      background: #ef4444;
     }
 
-    button:hover {
-      opacity: 0.85;
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: #475569;
       transform: translateY(-2px);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .stat-card.nem .icon {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .stat-card.pompa .icon {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .stat-card.su .icon {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+    }
+
+    .stat-card.sulama .icon {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .stat-card .label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .sub {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* Value Colors */
+    .value.success {
+      color: #22c55e;
+    }
+
+    .value.warning {
+      color: #f59e0b;
+    }
+
+    .value.danger {
+      color: #ef4444;
+    }
+
+    .value.info {
+      color: #3b82f6;
+    }
+
+    /* Chart Panel */
+    .chart-panel {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .chart-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .chart-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chart-header h2 span {
+      font-size: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: #475569;
+      color: #e2e8f0;
+      background: #334155;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-color: #22c55e;
+      color: white;
+    }
+
+    .reset-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #334155;
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .reset-btn:hover {
+      background: #475569;
+    }
+
+    .chart-body {
+      padding: 24px;
+      background: #0f172a;
+    }
+
+    #nemChart {
+      min-height: 400px;
+    }
+
+    .chart-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 20px 24px;
+      border-top: 1px solid #334155;
+      background: #1e293b;
+    }
+
+    .info-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .info-badge span {
+      font-size: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .app {
+        padding: 16px;
+      }
+
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .stat-card .value {
+        font-size: 2rem;
+      }
+
+      .chart-header {
+        padding: 16px;
+      }
+
+      .chart-body {
+        padding: 16px;
+      }
+
+      #nemChart {
+        min-height: 300px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <h1>🌱 Akıllı Bitki Sulama Sistemi</h1>
+      <p>Gerçek zamanlı toprak nem takibi ve otomatik sulama kontrolü</p>
+    </header>
 
-  <div class="container">
-
-    <h1>🌱 Akıllı Bitki Sulama Sistemi</h1>
-
-    <div id="baglanti" class="status-bar">Bağlanıyor...</div>
-
-
-    <div class="grid">
-
-      <div class="kart">
-        <div class="kart-title">Toprak Nemi</div>
-        <div class="deger" id="nem">--%</div>
-        <div>Ham Değer: <span id="raw">--</span></div>
+    <!-- Status Badge -->
+    <div style="text-align: center;">
+      <div id="baglanti" class="status-badge">
+        <div class="status-dot"></div>
+        <span>Bağlanıyor...</span>
       </div>
-
-      <div class="kart">
-        <div class="kart-title">Pompa Durumu</div>
-        <div class="deger" id="pompa">--</div>
-      </div>
-
-      <div class="kart">
-        <div class="kart-title">Su Seviyesi</div>
-        <div class="deger" id="su">--</div>
-      </div>
-
-      <div class="kart">
-        <div class="kart-title">Toplam Sulama</div>
-        <div class="deger" id="sulama">0</div>
-      </div>
-
     </div>
 
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card nem">
+        <div class="icon">💧</div>
+        <div class="label">Toprak Nemi</div>
+        <div class="value info" id="nem">--%</div>
+        <div class="sub">Ham Değer: <span id="raw">--</span></div>
+      </div>
+
+      <div class="stat-card pompa">
+        <div class="icon">⚡</div>
+        <div class="label">Pompa Durumu</div>
+        <div class="value" id="pompa">--</div>
+        <div class="sub">Nem &lt; 35% ise otomatik çalışır</div>
+      </div>
+
+      <div class="stat-card sulama">
+        <div class="icon">🔄</div>
+        <div class="label">Toplam Sulama</div>
+        <div class="value warning" id="sulama">0</div>
+        <div class="sub">Pompa çalışma sayısı</div>
+      </div>
+    </div>
+
+    <!-- Chart Panel -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <h2><span>📈</span> Toprak Nemi Geçmişi</h2>
+        <div class="filter-group">
+          <button class="filter-btn active" data-range="1h">Son 1 Saat</button>
+          <button class="filter-btn" data-range="24h">Son 24 Saat</button>
+          <button class="filter-btn" data-range="7d">Son 1 Hafta</button>
+          <button class="filter-btn" data-range="14d">Son 2 Hafta</button>
+          <button class="filter-btn" data-range="all">Tüm Zamanlar</button>
+          <button class="reset-btn" id="resetZoom">🔄 Zoom Sıfırla</button>
+        </div>
+      </div>
+
+      <div class="chart-body">
+        <div id="nemChart"></div>
+      </div>
+
+      <div class="chart-footer">
+        <div class="info-badge"><span>💧</span> Nem seviyesi: %0–100</div>
+        <div class="info-badge"><span>🖱️</span> Scroll: Zoom</div>
+        <div class="info-badge"><span>👆</span> Sürükle: Kaydır</div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -150,51 +408,348 @@
     const nemEl = document.getElementById("nem");
     const rawEl = document.getElementById("raw");
     const pompaEl = document.getElementById("pompa");
-    const suEl = document.getElementById("su");
     const sulamaEl = document.getElementById("sulama");
     const baglantiEl = document.getElementById("baglanti");
 
+    const rangeButtons = Array.from(document.querySelectorAll("[data-range]"));
+    const resetZoomBtn = document.getElementById("resetZoom");
+
+    // -----------------------------
+    // 📦 Veri havuzu
+    // -----------------------------
+    let store = [];
+    let activeRange = "1h";
+
+    function setActiveButton(range) {
+      activeRange = range;
+      currentZoom = null; // Filtre değişince zoom sıfırla
+      rangeButtons.forEach(b => b.classList.toggle("active", b.dataset.range === range));
+      renderChartFromStore(false);
+    }
+
+    rangeButtons.forEach(btn => {
+      btn.addEventListener("click", () => setActiveButton(btn.dataset.range));
+    });
+
+    // -----------------------------
+    // ⏱ Range → ms
+    // -----------------------------
+    function rangeToMs(r) {
+      if (r === "1h") return 60 * 60 * 1000;
+      if (r === "24h") return 24 * 60 * 60 * 1000;
+      if (r === "7d") return 7 * 24 * 60 * 60 * 1000;
+      if (r === "14d") return 14 * 24 * 60 * 60 * 1000;
+      if (r === "all") return Infinity;
+      return 60 * 60 * 1000;
+    }
+
+    // -----------------------------
+    // ✅ ApexCharts - Çizgi Grafiği
+    // -----------------------------
+    const trLocale = {
+      name: 'tr',
+      options: {
+        months: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+        shortMonths: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+        days: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
+        shortDays: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+        toolbar: {
+          download: 'İndir',
+          selection: 'Seçim',
+          selectionZoom: 'Seçim Yakınlaştır',
+          zoomIn: 'Yakınlaştır',
+          zoomOut: 'Uzaklaştır',
+          pan: 'Kaydır',
+          reset: 'Sıfırla'
+        }
+      }
+    };
+
+    const chartOptions = {
+      series: [{
+        name: 'Nem',
+        data: []
+      }],
+      chart: {
+        type: 'line',
+        height: 400,
+        locales: [trLocale],
+        defaultLocale: 'tr',
+        background: 'transparent',
+        foreColor: '#94a3b8',
+        fontFamily: 'Inter, sans-serif',
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 400
+        },
+        toolbar: {
+          show: true,
+          tools: {
+            download: false,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true
+          },
+          autoSelected: 'zoom'
+        },
+        zoom: {
+          enabled: true,
+          type: 'x'
+        }
+      },
+      colors: ['#22c55e'],
+      stroke: {
+        curve: 'smooth',
+        width: 3,
+        lineCap: 'round'
+      },
+      fill: {
+        type: 'none'
+      },
+      markers: {
+        size: 0,
+        strokeWidth: 0,
+        hover: {
+          size: 8,
+          sizeOffset: 3
+        }
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          datetimeUTC: false,
+          style: {
+            colors: '#64748b',
+            fontSize: '12px',
+            fontWeight: 500
+          },
+          datetimeFormatter: {
+            year: 'yyyy',
+            month: "dd MMM",
+            day: 'dd MMM',
+            hour: 'HH:mm'
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          stroke: {
+            color: '#334155',
+            width: 1,
+            dashArray: 4
+          }
+        }
+      },
+      yaxis: {
+        min: 0,
+        max: 100,
+        tickAmount: 5,
+        labels: {
+          style: {
+            colors: '#64748b',
+            fontSize: '12px',
+            fontWeight: 500
+          },
+          formatter: (val) => `%${val.toFixed(0)}`
+        }
+      },
+      tooltip: {
+        theme: 'dark',
+        style: {
+          fontSize: '14px',
+          fontFamily: 'Inter, sans-serif'
+        },
+        x: {
+          formatter: function (val) {
+            const date = new Date(val);
+            const gun = date.getDate();
+            const aylar = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+            const ay = aylar[date.getMonth()];
+            const yil = date.getFullYear();
+            const saat = date.getHours().toString().padStart(2, '0');
+            const dakika = date.getMinutes().toString().padStart(2, '0');
+            return `${gun} ${ay} ${yil} - ${saat}:${dakika}`;
+          }
+        },
+        y: {
+          formatter: (val) => `%${val} Nem`
+        },
+        marker: {
+          show: true
+        }
+      },
+      grid: {
+        show: true,
+        borderColor: '#1e293b',
+        strokeDashArray: 4,
+        position: 'back',
+        xaxis: {
+          lines: {
+            show: false
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+      noData: {
+        text: 'Veri yükleniyor...',
+        align: 'center',
+        verticalAlign: 'middle',
+        style: {
+          color: '#64748b',
+          fontSize: '16px',
+          fontFamily: 'Inter, sans-serif'
+        }
+      }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#nemChart"), chartOptions);
+    chart.render();
+
+    // Zoom durumunu sakla
+    let currentZoom = null;
+
+    resetZoomBtn.addEventListener("click", () => {
+      currentZoom = null;
+      chart.resetSeries(true, true);
+      renderChartFromStore(false);
+    });
+
+    // -----------------------------
+    // 📈 Store → Chart
+    // -----------------------------
+    function renderChartFromStore(preserveZoom = false) {
+      if (store.length === 0) return;
+
+      const now = Date.now();
+      const rangeMs = rangeToMs(activeRange);
+
+      let filtered;
+      if (activeRange === "all") {
+        // Tüm Zamanlar - tüm verileri göster (gelecek dahil)
+        filtered = store.slice().sort((a, b) => new Date(a.t) - new Date(b.t));
+      } else {
+        // Diğer filtreler - şu anki zamana göre filtrele
+        const cutoff = now - rangeMs;
+        filtered = store
+          .filter(p => {
+            const time = new Date(p.t).getTime();
+            return time >= cutoff && time <= now;
+          })
+          .sort((a, b) => new Date(a.t) - new Date(b.t));
+      }
+
+      const chartData = filtered.map(p => ({
+        x: new Date(p.t).getTime(),
+        y: p.nem
+      }));
+
+      // Zoom durumunu koru
+      if (preserveZoom && currentZoom) {
+        chart.updateSeries([{
+          name: 'Nem',
+          data: chartData
+        }], false);
+        chart.zoomX(currentZoom.min, currentZoom.max);
+      } else {
+        chart.updateSeries([{
+          name: 'Nem',
+          data: chartData
+        }]);
+      }
+    }
+
+    // Zoom değiştiğinde kaydet
+    chart.addEventListener('zoomed', function (e) {
+      if (e.xaxis) {
+        currentZoom = { min: e.xaxis.min, max: e.xaxis.max };
+      }
+    });
+
+    chart.addEventListener('scrolled', function (e) {
+      if (e.xaxis) {
+        currentZoom = { min: e.xaxis.min, max: e.xaxis.max };
+      }
+    });
+
+    // -----------------------------
+    // 🧼 Store temizliği
+    // -----------------------------
+    function pruneStore() {
+      const keepAfter = Date.now() - (31 * 24 * 60 * 60 * 1000);
+      store = store.filter(p => new Date(p.t).getTime() >= keepAfter);
+    }
+
+    // -----------------------------
+    // Socket events
+    // -----------------------------
     socket.on("connect", () => {
-      baglantiEl.textContent = "Bağlı ✅";
-      baglantiEl.style.background = "rgba(46, 204, 113, 0.25)";
+      baglantiEl.className = "status-badge connected";
+      baglantiEl.innerHTML = '<div class="status-dot"></div><span>Bağlı</span>';
     });
 
     socket.on("disconnect", () => {
-      baglantiEl.textContent = "Bağlantı Kesildi ❌";
-      baglantiEl.style.background = "rgba(231, 76, 60, 0.25)";
+      baglantiEl.className = "status-badge disconnected";
+      baglantiEl.innerHTML = '<div class="status-dot"></div><span>Bağlantı Kesildi</span>';
     });
 
+    // Mock data
+    socket.on("mockData", (data) => {
+      const normalized = data.map(x => ({
+        t: x.timestamp || x.zaman,
+        nem: Number(x.nem),
+        pompa: !!x.pompa,
+        raw: x.raw ?? null
+      })).filter(x => x.t);
+
+      store = normalized;
+      pruneStore();
+      renderChartFromStore(false);
+    });
+
+    // Anlık veri
     socket.on("veriGuncelle", (veri) => {
       nemEl.textContent = veri.nem + "%";
-      rawEl.textContent = veri.raw;
+      rawEl.textContent = veri.raw ?? "--";
 
-      if (veri.nem < 35) nemEl.className = "deger kirmizi";
-      else if (veri.nem > 65) nemEl.className = "deger yesil";
-      else nemEl.className = "deger turuncu";
+      if (veri.nem < 35) {
+        nemEl.className = "value danger";
+      } else if (veri.nem > 65) {
+        nemEl.className = "value success";
+      } else {
+        nemEl.className = "value warning";
+      }
 
       pompaEl.textContent = veri.pompa ? "AÇIK" : "KAPALI";
-      pompaEl.className = "deger " + (veri.pompa ? "yesil" : "kirmizi");
-
-      suEl.textContent = veri.su;
-      if (veri.su === "DOLU") suEl.className = "deger yesil";
-      else if (veri.su === "YARIM") suEl.className = "deger turuncu";
-      else suEl.className = "deger kirmizi";
+      pompaEl.className = "value " + (veri.pompa ? "success" : "danger");
 
       sulamaEl.textContent = veri.sulama;
+
+      store.push({
+        t: new Date().toISOString(),
+        nem: Number(veri.nem),
+        pompa: !!veri.pompa,
+        raw: veri.raw ?? null
+      });
+
+      pruneStore();
+      renderChartFromStore(true); // Zoom'u koru
     });
 
-    async function manuelSulama() {
-      if (!confirm("Manuel sulama başlatılsın mı?")) return;
-
-      try {
-        await fetch("/api/sulama", { method: "POST" });
-        alert("✅ Manuel sulama gönderildi");
-      } catch {
-        alert("❌ ESP32’ye ulaşılamadı");
-      }
-    }
+    // default
+    setActiveButton("1h");
   </script>
-
 </body>
 
 </html>
