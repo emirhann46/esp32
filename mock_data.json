@@ -3694,5 +3694,271 @@
     "pompa": false,
     "su": "DEPO DOLU",
     "sulama": 58
+  },
+  {
+    "timestamp": "2025-12-28T09:07:50.635Z",
+    "nem": 56,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 1
+  },
+  {
+    "timestamp": "2025-12-28T09:07:53.127Z",
+    "nem": 71,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 1
+  },
+  {
+    "timestamp": "2025-12-28T09:07:56.572Z",
+    "nem": 71,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 1
+  },
+  {
+    "timestamp": "2025-12-28T09:07:59.232Z",
+    "nem": 71,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 1
+  },
+  {
+    "timestamp": "2025-12-28T09:08:02.306Z",
+    "nem": 39,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 2
+  },
+  {
+    "timestamp": "2025-12-28T09:08:05.182Z",
+    "nem": 0,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 2
+  },
+  {
+    "timestamp": "2025-12-28T09:08:08.474Z",
+    "nem": 15,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:08:10.927Z",
+    "nem": 53,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:08:14.589Z",
+    "nem": 59,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:08:17.257Z",
+    "nem": 60,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:08:20.122Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 4
+  },
+  {
+    "timestamp": "2025-12-28T09:08:23.482Z",
+    "nem": 42,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 4
+  },
+  {
+    "timestamp": "2025-12-28T09:08:26.263Z",
+    "nem": 49,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 4
+  },
+  {
+    "timestamp": "2025-12-28T09:08:29.130Z",
+    "nem": 50,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 4
+  },
+  {
+    "timestamp": "2025-12-28T09:08:32.622Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:35.274Z",
+    "nem": 22,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:38.557Z",
+    "nem": 59,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:41.219Z",
+    "nem": 59,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:44.703Z",
+    "nem": 61,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:47.358Z",
+    "nem": 60,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 5
+  },
+  {
+    "timestamp": "2025-12-28T09:08:50.645Z",
+    "nem": 22,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 6
+  },
+  {
+    "timestamp": "2025-12-28T09:08:53.297Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 6
+  },
+  {
+    "timestamp": "2025-12-28T09:08:56.175Z",
+    "nem": 0,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 6
+  },
+  {
+    "timestamp": "2025-12-28T09:08:59.243Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 7
+  },
+  {
+    "timestamp": "2025-12-28T09:09:02.729Z",
+    "nem": 0,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 7
+  },
+  {
+    "timestamp": "2025-12-28T09:09:05.182Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 8
+  },
+  {
+    "timestamp": "2025-12-28T09:09:08.261Z",
+    "nem": 66,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 8
+  },
+  {
+    "timestamp": "2025-12-28T09:09:11.122Z",
+    "nem": 24,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 8
+  },
+  {
+    "timestamp": "2025-12-28T09:09:14.021Z",
+    "nem": 36,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 9
+  },
+  {
+    "timestamp": "2025-12-28T09:10:08.388Z",
+    "nem": 83,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 1
+  },
+  {
+    "timestamp": "2025-12-28T09:10:11.402Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 2
+  },
+  {
+    "timestamp": "2025-12-28T09:10:14.810Z",
+    "nem": 45,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 2
+  },
+  {
+    "timestamp": "2025-12-28T09:10:17.898Z",
+    "nem": 73,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 2
+  },
+  {
+    "timestamp": "2025-12-28T09:10:20.751Z",
+    "nem": 0,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:10:23.489Z",
+    "nem": 68,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:10:26.695Z",
+    "nem": 63,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:10:29.971Z",
+    "nem": 62,
+    "pompa": false,
+    "su": "DEPO DOLU",
+    "sulama": 3
+  },
+  {
+    "timestamp": "2025-12-28T09:10:32.444Z",
+    "nem": 58,
+    "pompa": true,
+    "su": "DEPO DOLU",
+    "sulama": 4
   }
 ]

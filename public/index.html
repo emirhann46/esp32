@@ -657,16 +657,21 @@
 
       // Zoom durumunu koru
       if (preserveZoom && currentZoom) {
+        // Animasyonsuz güncelle ve zoom'u koru
         chart.updateSeries([{
           name: 'Nem',
           data: chartData
-        }], false);
-        chart.zoomX(currentZoom.min, currentZoom.max);
+        }], false); // false = animasyon yok
+
+        // Zoom'u tekrar uygula
+        setTimeout(() => {
+          chart.zoomX(currentZoom.min, currentZoom.max);
+        }, 10);
       } else {
         chart.updateSeries([{
           name: 'Nem',
           data: chartData
-        }]);
+        }], false);
       }
     }
 
